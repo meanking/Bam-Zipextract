@@ -23,14 +23,22 @@ class UploadController extends Controller
 		
 		$uploads_folder = "";
    
-        $request->file->move(public_path($uploads_folder), $fileName);
-        $Path = public_path($uploads_folder).'\\'.$fileName;
-        \Madzipper::make($Path)->extractTo(public_path($uploads_folder));
-		$guid = uniqid();
-		$old = public_path($uploads_folder).'/content';
-		$new = public_path($uploads_folder).'/'.$guid;
-		rename($old, $new);
-        return ($guid);
+        $result = $request->file->move(public_path($uploads_folder), $fileName);
+		if ($result) {
+			$flag = false;
+			while($flag == false) {
+				if (file_exists(public_path($uploads_folder).'/'.$fileName)) {
+					$flag = true;
+					$Path = public_path($uploads_folder).'/'.$fileName;
+					$result = \Madzipper::make($Path)->extractTo(public_path($uploads_folder));
+					$guid = uniqid();
+					$old = public_path($uploads_folder).'/content';
+					$new = public_path($uploads_folder).'/'.$guid;
+					rename($old, $new);
+					return ($guid);
+				}
+			}
+		}
    
     }
 }
