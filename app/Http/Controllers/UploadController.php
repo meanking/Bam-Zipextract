@@ -19,24 +19,42 @@ class UploadController extends Controller
 
     public function extract_zip(Request $request)
     {
-        $fileName = time().'.'.$request->file->extension();  
+		$ext = $request->file->extension();
+        $fileName = time().'.'.$ext;
 		
 		$uploads_folder = "";
+		if ($ext != 'zip') {
+			if ($ext == 'pdf') {
+				$uploads_folder = "pdf";
+			} else if ($ext == 'jpg' || $ext == 'gif' || $ext == 'png') {
+				$uploads_folder = "image";
+			} else if ($ext == 'mp3' || $ext == 'wav') {
+				$uploads_folder = "audio";
+			} else if ($ext == 'stl') {
+				$uploads_folder = "stl";
+			} else {
+				$uploads_folder = "other";
+			}
+		}
    
         $result = $request->file->move(public_path($uploads_folder), $fileName);
 		if ($result) {
-			$flag = false;
-			while($flag == false) {
-				if (file_exists(public_path($uploads_folder).'/'.$fileName)) {
-					$flag = true;
-					$Path = public_path($uploads_folder).'/'.$fileName;
-					$result = \Madzipper::make($Path)->extractTo(public_path($uploads_folder));
-					$guid = uniqid();
-					$old = public_path($uploads_folder).'/content';
-					$new = public_path($uploads_folder).'/'.$guid;
-					rename($old, $new);
-					return ($guid);
+			if ($ext == 'zip') {
+				$flag = false;
+				while($flag == false) {
+					if (file_exists(public_path($uploads_folder).'/'.$fileName)) {
+						$flag = true;
+						$Path = public_path($uploads_folder).'/'.$fileName;
+						$result = \Madzipper::make($Path)->extractTo(public_path($uploads_folder));
+						$guid = uniqid();
+						$old = public_path($uploads_folder).'/content';
+						$new = public_path($uploads_folder).'/'.$guid;
+						rename($old, $new);
+						return ($guid."/");
+					}
 				}
+			} else {
+				return $uploads_folder."/".$fileName;
 			}
 		}
    
