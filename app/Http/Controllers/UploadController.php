@@ -19,8 +19,9 @@ class UploadController extends Controller
 
     public function extract_zip(Request $request)
     {
-		$ext = $request->file->extension();
-        $fileName = time().'.'.$ext;
+		$fileOriginalName = $request->files->get('file')->getClientOriginalName();
+		$ext      = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+		$fileName = time().'.'.$ext;
 		
 		$uploads_folder = "";
 		if ($ext != 'zip') {
