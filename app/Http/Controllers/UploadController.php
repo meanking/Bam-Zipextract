@@ -17,6 +17,10 @@ class UploadController extends Controller
         //
     }
 
+	/**
+	 * Extract a zip file
+	 * 
+	 */
     public function extract_zip(Request $request)
     {
 		$fileOriginalName = $request->files->get('file')->getClientOriginalName();
@@ -59,5 +63,28 @@ class UploadController extends Controller
 			}
 		}
    
-    }
+	}
+	
+	public function delete_file(Request $request)
+	{
+		$file_path = $request->input('file_path');
+		if (strpos($file_path, '/image/') !== false 
+			|| strpos($file_path, '/pdf/') !==false
+			|| strpos($file_path, '/audio/') !==false
+			|| strpos($file_path, '/stl/') !==false) 
+		{
+			$path = public_path().$file_path;
+			if (file_exists($path)) {
+				@unlink($path);
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			$old = public_path().'/'. str_replace('/', '', $file_path);
+			$new = public_path().'/'. str_replace('/', '', $file_path).'_deleted';
+			rename($old, $new);
+			return true;
+		}
+	}
 }

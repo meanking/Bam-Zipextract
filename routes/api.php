@@ -14,6 +14,7 @@ use App\Http\Controllers\UploadController;
 |
 */
 Route::post('/extract_zip', [UploadController::class, 'extract_zip']);
+Route::post('/delete_file', [UploadController::class, 'delete_file']);
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
