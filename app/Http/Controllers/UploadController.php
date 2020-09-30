@@ -37,6 +37,15 @@ class UploadController extends Controller
 				$uploads_folder = "audio";
 			} else if ($ext == 'stl') {
 				$uploads_folder = "stl";
+			} else if ($ext == 'ttf' 
+					|| $ext == 'TTF'
+					|| $ext == 'woff' 
+					|| $ext == 'WOFF'
+					|| $ext == 'svg' 
+					|| $ext == 'SVG'
+					|| $ext == 'eot'
+					|| $ext == 'EOT') {
+				$uploads_folder = "font";
 			} else {
 				$uploads_folder = "other";
 			}
@@ -71,7 +80,9 @@ class UploadController extends Controller
 		if (strpos($file_path, '/image/') !== false 
 			|| strpos($file_path, '/pdf/') !==false
 			|| strpos($file_path, '/audio/') !==false
-			|| strpos($file_path, '/stl/') !==false) 
+			|| strpos($file_path, '/stl/') !==false
+			|| strpos($file_path, '/font/') !==false
+			|| strpos($file_path, '/other/') !==false) 
 		{
 			$path = public_path().$file_path;
 			if (file_exists($path)) {
