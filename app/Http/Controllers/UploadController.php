@@ -30,13 +30,16 @@ class UploadController extends Controller
 		$uploads_folder = "";
 		if ($ext != 'zip') {
 			if ($ext == 'pdf') {
-				$uploads_folder = "pdf";
-			} else if ($ext == 'jpg' || $ext == 'gif' || $ext == 'png') {
-				$uploads_folder = "image";
-			} else if ($ext == 'mp3' || $ext == 'wav') {
-				$uploads_folder = "audio";
+				$uploads_folder = "p";
+			} else if ($ext == 'jpg' 
+					|| $ext == 'gif' 
+					|| $ext == 'png') {
+				$uploads_folder = "i";
+			} else if ($ext == 'mp3' 
+					|| $ext == 'wav') {
+				$uploads_folder = "a";
 			} else if ($ext == 'stl') {
-				$uploads_folder = "stl";
+				$uploads_folder = "s";
 			} else if ($ext == 'ttf' 
 					|| $ext == 'TTF'
 					|| $ext == 'woff' 
@@ -45,9 +48,9 @@ class UploadController extends Controller
 					|| $ext == 'SVG'
 					|| $ext == 'eot'
 					|| $ext == 'EOT') {
-				$uploads_folder = "font";
+				$uploads_folder = "f";
 			} else {
-				$uploads_folder = "other";
+				$uploads_folder = "o";
 			}
 		}
    
@@ -82,7 +85,13 @@ class UploadController extends Controller
 			|| strpos($file_path, '/audio/') !==false
 			|| strpos($file_path, '/stl/') !==false
 			|| strpos($file_path, '/font/') !==false
-			|| strpos($file_path, '/other/') !==false) 
+			|| strpos($file_path, '/other/') !==false
+			|| strpos($file_path, '/i/') !==false
+			|| strpos($file_path, '/p/') !==false
+			|| strpos($file_path, '/a/') !==false
+			|| strpos($file_path, '/s/') !==false
+			|| strpos($file_path, '/f/') !==false
+			|| strpos($file_path, '/o/') !==false) 
 		{
 			$path = public_path().$file_path;
 			if (file_exists($path)) {
