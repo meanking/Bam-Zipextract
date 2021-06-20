@@ -25,7 +25,7 @@ class UploadController extends Controller
     {
 		$fileOriginalName = $request->files->get('file')->getClientOriginalName();
 		$ext      = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
-		$fileName = time().'.'.$ext;
+		$fileName = isset($request->file_name) ? $request->file_name : time().'.'.$ext;
 		
 		$uploads_folder = "";
 		if ($ext != 'zip') {
